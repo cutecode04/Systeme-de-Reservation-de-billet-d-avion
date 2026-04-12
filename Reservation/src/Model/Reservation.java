@@ -1,4 +1,5 @@
 package Model;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,143 +14,83 @@ public class Reservation {
     private Paiement paiement;
     private Billet billet;
 
-    private int passagerId;
-    private int volId;
-    private int paiementId;
-
     private List<Integer> bagagesSupplementaires = new ArrayList<>();
 
-    public Reservation() {}
+    public static final String STATUT_CONFIRME = "CONFIRMEE";
+    public static final String STATUT_ANNULE = "ANNULEE";
 
-    public Reservation(int numero, String statut, String dateReservation,
-                       int passagerId, int volId, int paiementId) {
-        this.numero = numero;
-        this.statut = statut;
-        this.dateReservation = dateReservation;
-        this.passagerId = passagerId;
-        this.volId = volId;
-        this.paiementId = paiementId;
+    public Reservation(int numero,
+                       String dateReservation,
+                       Passager passager,
+                       Vol vol) throws InvalidDataException {
+
+        setNumero(numero);
+        setDateReservation(dateReservation);
+        setPassager(passager);
+        setVol(vol);
+        this.statut = STATUT_CONFIRME;
     }
 
     public int getNumero() { return numero; }
-    public void setNumero(int numero) { this.numero = numero; }
+    public void setNumero(int numero) throws InvalidDataException {
+        if (numero <= 0)
+            throw new InvalidDataException("Numéro de réservation invalide");
+        this.numero = numero;
+    }
 
     public String getStatut() { return statut; }
-    public void setStatut(String statut) { this.statut = statut; }
 
     public String getDateReservation() { return dateReservation; }
-    public void setDateReservation(String dateReservation) { this.dateReservation = dateReservation; }
+    public void setDateReservation(String dateReservation) throws InvalidDataException {
+        if (dateReservation == null || dateReservation.trim().isEmpty())
+            throw new InvalidDataException("Date de réservation invalide");
+        this.dateReservation = dateReservation.trim();
+    }
 
-
+    public Passager getPassager() { return passager; }
+    public void setPassager(Passager passager) throws InvalidDataException {
+        if (passager == null)
+            throw new InvalidDataException("Passager obligatoire pour une réservation");
+        this.passager = passager;
+    }
 
     public Vol getVol() { return vol; }
-    public void setVol(Vol vol) {
+    public void setVol(Vol vol) throws InvalidDataException {
+        if (vol == null)
+            throw new InvalidDataException("Vol obligatoire pour une réservation");
         this.vol = vol;
-        if (vol != null) {
-            //this.volId = vol.getNumero();
-        }
     }
 
     public Paiement getPaiement() { return paiement; }
-    public void setPaiement(Paiement paiement) { this.paiement = paiement; }
+    public void setPaiement(Paiement paiement) throws InvalidDataException {
+        if (paiement == null)
+            throw new InvalidDataException("Paiement obligatoire");
+        this.paiement = paiement;
+    }
 
     public Billet getBillet() { return billet; }
-    public void setBillet(Billet billet) { this.billet = billet; }
-
-    public int getPassagerId() { return passagerId; }
-    public void setPassagerId(int passagerId) { this.passagerId = passagerId; }
-
-    public int getVolId() { return volId; }
-    public void setVolId(int volId) { this.volId = volId; }
-
-    public int getPaiementId() { return paiementId; }
-    public void setPaiementId(int paiementId) { this.paiementId = paiementId; }
-
-    public void confirmer() {
-        this.statut = "CONFIRMEE";
+    public void setBillet(Billet billet) throws InvalidDataException {
+        if (billet == null)
+            throw new InvalidDataException("Billet obligatoire");
+        this.billet = billet;
     }
 
-    public void annuler() {
-        this.statut = "ANNULEE";
-    }
+    public void confirmer() { this.statut = STATUT_CONFIRME; }
+    public void annuler() { this.statut = STATUT_ANNULE; }
 
-    public void changerSiege(String nouveauSiege) {
-        if (billet != null) {
-            billet.setSiege(nouveauSiege);
-        }
-    }
-
-    public void ajouterBagageSupplementaire(int poids) {
-
-        if (bagagesSupplementaires.size() >= 3) {
-            System.out.println("Maximum 3 bagages autorisés");
-            return;
-        }
-
-        if (poids > 23) {
-            System.out.println("Poids max = 23kg");
-            return;
-        }
-
-        if (poids <= 0) {
-            System.out.println("Poids invalide");
-            return;
-        }
-
+    public void ajouterBagageSupplementaire(int poids) throws InvalidDataException {
+        if (bagagesSupplementaires.size() >= 3)
+            throw new InvalidDataException("Maximum 3 bagages supplémentaires");
+        if (poids <= 0 || poids > 23)
+            throw new InvalidDataException("Poids de bagage invalide (1–23kg)");
         bagagesSupplementaires.add(poids);
-        System.out.println("Bagage ajouté: " + poids + "kg");
     }
 
-    public int getTotalBagages() {
-        int total = 0;
-        for (int poids : bagagesSupplementaires) {
-            total += poids;
-        }
-        return total;
-    }
-
-    public void afficherBagages() {
-        System.out.println("Bagages: " + bagagesSupplementaires);
-    }
-
-    public void upgraderClasse(String nouvelleClasse) {
-
-        if (billet == null) {
-            System.out.println("Aucun billet");
-            return;
-        }
-
-        if (billet.getClasse().equalsIgnoreCase("economique") &&
-                (nouvelleClasse.equalsIgnoreCase("business") || nouvelleClasse.equalsIgnoreCase("first"))) {
-
-            billet.setClasse(nouvelleClasse);
-            System.out.println("Upgrade réussi");
-
-        } else if (billet.getClasse().equalsIgnoreCase("business") &&
-                nouvelleClasse.equalsIgnoreCase("first")) {
-
-            billet.setClasse(nouvelleClasse);
-            System.out.println("Upgrade réussi");
-
-        } else {
-            System.out.println("Upgrade non autorisé");
-        }
-    }
-
-    public void afficherReservation() {
-        System.out.println("=== RESERVATION ===");
-        System.out.println("Numero: " + numero);
-        System.out.println("Statut: " + statut);
-        System.out.println("Date: " + dateReservation);
-        System.out.println("Passager ID: " + passagerId);
-        System.out.println("Vol ID: " + volId);
-
-        if (billet != null) {
-            System.out.println("Classe: " + billet.getClasse());
-            System.out.println("Siege: " + billet.getSiege());
-        }
-
-        System.out.println("Bagages: " + bagagesSupplementaires);
-        System.out.println("===================");
+    @Override
+    public String toString() {
+        return "Reservation #" + numero +
+                " | " + statut +
+                " | Vol : " + (vol != null ? vol.toString() : "N/A") +
+                " | Passager : " + (passager != null ? passager.toString() : "N/A");
     }
 }

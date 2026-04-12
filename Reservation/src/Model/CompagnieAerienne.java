@@ -1,35 +1,31 @@
 package Model;
 
-public class CompagnieAerienne
-{
-    private int id;
+public class CompagnieAerienne {
+
     private String code;
     private String pays;
 
-    public CompagnieAerienne(String code, String pays) {
-        this.code = code;
-        this.pays = pays;
+    public CompagnieAerienne(String code, String pays) throws InvalidDataException {
+        setCode(code);
+        setPays(pays);
     }
 
-    public int getId() {
-        return id;
+    public void setCode(String code) throws InvalidDataException {
+        if (code == null || code.trim().length() < 2)
+            throw new InvalidDataException("Code compagnie invalide");
+        this.code = code.trim().toUpperCase();
     }
 
-
-
-    public String getCode() {
-        return code;
+    public void setPays(String pays) throws InvalidDataException {
+        if (pays == null || pays.trim().isEmpty())
+            throw new InvalidDataException("Pays invalide");
+        this.pays = pays.trim();
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+    public String getCode() { return code; }
 
-    public String getPays() {
-        return pays;
-    }
-
-    public void setPays(String pays) {
-        this.pays = pays;
+    @Override
+    public String toString() {
+        return code + " (" + pays + ")";
     }
 }

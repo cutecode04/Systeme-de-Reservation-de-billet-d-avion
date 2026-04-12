@@ -4,19 +4,14 @@ public class Admin extends Utilisateur {
 
     private String poste;
 
-    public Admin(String nom, String email, String motDePasse, String poste) {
+    public Admin(String nom, String email, String motDePasse, String poste) throws InvalidDataException {
         super(nom, email, motDePasse);
-        this.poste = poste;
+        setPoste(poste);
     }
 
-    public String getPoste() {
-        return poste;
-    }
-
-    public void setPoste(String poste) {
-        this.poste = poste;
-    }
-    public void gererVol() {
-        System.out.println("L'admin " + nom + " modifie un vol.");
+    public void setPoste(String poste) throws InvalidDataException {
+        if (poste == null || poste.trim().isEmpty())
+            throw new InvalidDataException("Poste invalide");
+        this.poste = poste.trim();
     }
 }
