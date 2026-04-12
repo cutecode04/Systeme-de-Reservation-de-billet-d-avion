@@ -1,4 +1,4 @@
-package model;
+package Model;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,13 +40,7 @@ public class Reservation {
     public String getDateReservation() { return dateReservation; }
     public void setDateReservation(String dateReservation) { this.dateReservation = dateReservation; }
 
-    public Passager getPassager() { return passager; }
-    public void setPassager(Passager passager) {
-        this.passager = passager;
-        if (passager != null) {
-            this.passagerId = passager.getNumPasseport();
-        }
-    }
+
 
     public Vol getVol() { return vol; }
     public void setVol(Vol vol) {
