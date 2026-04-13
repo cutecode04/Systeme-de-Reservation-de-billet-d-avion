@@ -1,106 +1,138 @@
 package Model;
-
-public class Billet {
-
+public class Billet
+{
     private int id;
     private String numero;
-    private double prix;
+    private Double prix;
     private String siege;
     private String classe;
     private String statut;
-
-    private Reservation reservation;
+   private Reservation resevation;
     private Passager passager;
-    private Vol vol;
+    private Vol unvol;
 
-    public static final String STATUT_RESERVE = "Réservé";
-    public static final String STATUT_CONFIRME = "Confirmé";
-
-    private static int compteurId = 1;
-
-    public Billet(String numero,
-                  double prix,
-                  String siege,
-                  String classe,
-                  String statut,
-                  Passager passager,
-                  Vol vol,
-                  Reservation reservation) throws InvalidDataException {
-
-        this.id = compteurId++;
-        setNumero(numero);
-        setPrix(prix);
-        setSiege(siege);
-        setClasse(classe);
-        setStatut(statut);
-        setPassager(passager);
-        setVol(vol);
-        setReservation(reservation);
+    public String getNumero() {
+        return numero;
     }
 
-    public int getId() { return id; }
+    public void setNumero(int numero) {
+//        if(numero==null){
+//            System.out.println("Le numero de billet ne peut pas etre vide   ! ");
+//        }
+//        else
+//        {
+//            this.numero = numero;
+//        }
 
-    public String getNumero() { return numero; }
-    public void setNumero(String numero) throws InvalidDataException {
-        if (numero == null || numero.trim().isEmpty())
-            throw new InvalidDataException("Numéro de billet invalide");
-        this.numero = numero.trim();
     }
 
-    public double getPrix() { return prix; }
-    public void setPrix(double prix) throws InvalidDataException {
-        if (prix <= 0)
-            throw new InvalidDataException("Prix du billet invalide");
-        this.prix = prix;
+    public int getId() {
+        return id;
     }
 
-    public String getSiege() { return siege; }
-    public void setSiege(String siege) throws InvalidDataException {
-        if (siege == null || siege.trim().isEmpty())
-            throw new InvalidDataException("Siège invalide");
-        this.siege = siege.trim();
+
+    public Double getPrix() {
+        return prix;
     }
 
-    public String getClasse() { return classe; }
-    public void setClasse(String classe) throws InvalidDataException {
-        if (classe == null || classe.trim().isEmpty())
-            throw new InvalidDataException("Classe invalide");
-        this.classe = classe.trim();
+    public void setPrix(Double prix) {
+        if (prix == null || prix <= 0)
+        {
+            System.out.println("Le prix doit supérieur à 0 !");
+        }
+        else {
+            this.prix = prix;
+        }
+
     }
 
-    public String getStatut() { return statut; }
-    public void setStatut(String statut) throws InvalidDataException {
-        if (!STATUT_CONFIRME.equals(statut) && !STATUT_RESERVE.equals(statut))
-            throw new InvalidDataException("Statut de billet invalide");
-        this.statut = statut;
+    public String getSiege() {
+        return siege;
     }
 
-    public Reservation getReservation() { return reservation; }
-    public void setReservation(Reservation reservation) throws InvalidDataException {
-        if (reservation == null)
-            throw new InvalidDataException("Réservation obligatoire pour un billet");
-        this.reservation = reservation;
+    public void setSiege(String siege) {
+        if(siege==null)
+        {
+            System.out.println("Le siege ne peut pas etre vide ! ");
+        }else {
+
+            this.siege = siege;
+        }
+
     }
 
-    public Passager getPassager() { return passager; }
-    public void setPassager(Passager passager) throws InvalidDataException {
-        if (passager == null)
-            throw new InvalidDataException("Passager obligatoire pour un billet");
-        this.passager = passager;
+    public String getClasse() {
+        return classe;
     }
 
-    public Vol getVol() { return vol; }
-    public void setVol(Vol vol) throws InvalidDataException {
-        if (vol == null)
-            throw new InvalidDataException("Vol obligatoire pour un billet");
-        this.vol = vol;
+    public void setClasse(String classe) {
+        this.classe = classe;
+    }
+
+    public String getStatut() {
+        return statut;
+    }
+
+    public void setStatut(String statut) {
+        if(statut!="Confirmé"&& statut!="Reservé")
+        {
+            System.out.println("Statut invalide ! ");
+        }
+        else
+        {
+            this.statut = statut;
+        }
+
+    }
+
+
+
+    public void setResevation(Reservation resevation) {
+        if (resevation == null) {
+            System.out.println("La reservation n doit exister ! ");
+        }
+        else{
+            this.resevation = resevation;
+        }
+
+
+    }
+
+    public Passager getPassager() {
+        return passager;
+    }
+
+    public void setPassager(Passager passager) {
+
+        if (passager == null) {
+            System.out.println("Le passager doit exister ! ");
+        }
+        else{
+            this.passager = passager;
+        }
+
+    }
+
+    public Vol getUnvol() {
+        return unvol;
+    }
+
+    public void setUnvol(Vol unvol) {
+        this.unvol = unvol;
     }
 
     @Override
     public String toString() {
-        return "Billet n°" + numero +
-                " | " + classe +
-                " | Siège " + siege +
-                " | " + prix + "$";
+        return "Billet{" +
+                "\nnumero='" + numero + '\'' +
+                "\nprix=" + prix +
+                "\nsiege='" + siege + '\'' +
+                "\nclasse='" + classe.getClass() + '\'' +
+                "\nstatut='" + statut + '\'' +
+                "\nresevation=" + resevation.getNumero();
+                //"\npassager=" + passager.getNomComplet()  + " Numero :  " + passager.getNumPasseport();
+
     }
+
+
 }
