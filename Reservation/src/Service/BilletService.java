@@ -74,9 +74,13 @@ public class BilletService {
                 passager,
                 vol,
                 r
+
         );
         r.setBillet(b);
 
         return r;
+    }
+
+    public List<Vol> getTousLesVols() {
     }
 }
